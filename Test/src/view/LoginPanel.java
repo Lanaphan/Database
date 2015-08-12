@@ -40,7 +40,8 @@ public class LoginPanel extends JPanel {
 					JOptionPane.showMessageDialog(getParent(),
 						    "Please enter a valid email address.");
 				} else {
-					//Successful Log In
+					//TODO: Check database to match email and password
+					
 				}
 			}
 		});
@@ -49,7 +50,7 @@ public class LoginPanel extends JPanel {
 		btnNewUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 			    //New User Screen
-				NewUser aUser = new NewUser();
+				NewUserPanel aUser = new NewUserPanel();
 				JFrame frame = (JFrame) getTopLevelAncestor();
 				frame.setContentPane(aUser);
 				frame.repaint();

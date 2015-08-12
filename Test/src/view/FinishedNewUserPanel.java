@@ -11,12 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class FinishedNewUser extends JPanel {
+public class FinishedNewUserPanel extends JPanel {
 	
 	/**
 	 * Create the panel.
 	 */
-	public FinishedNewUser() {
+	public FinishedNewUserPanel() {
 		
 		JLabel lblYourProfileHas = new JLabel("Your profile has been all set up!");
 		

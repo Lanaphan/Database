@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.JPanel;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class NewUser extends JPanel {
+public class NewUserPanel extends JPanel {
 	private JTextField txtEmailAddress;
 	private JTextField txtPassword;
 	private JTextField txtConfirmPassword;
@@ -28,7 +27,7 @@ public class NewUser extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public NewUser() {
+	public NewUserPanel() {
 		
 		txtEmailAddress = new JTextField();
 		txtEmailAddress.setText("Email Address");
@@ -77,9 +76,10 @@ public class NewUser extends JPanel {
 						String displayName = txtDisplayName.getText();
 						String dob = txtBirthdayxxxxxxxx.getText();
 						User createUser = new User(email, password, dob, displayName, false, false);
+						//TODO: Store in Database!!
 
 						// Display Finished Screen
-						FinishedNewUser finish = new FinishedNewUser();
+						FinishedNewUserPanel finish = new FinishedNewUserPanel();
 						JFrame frame = (JFrame) getTopLevelAncestor();
 						frame.setContentPane(finish);
 						frame.repaint();
