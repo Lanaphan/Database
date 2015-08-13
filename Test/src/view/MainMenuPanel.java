@@ -11,12 +11,36 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import model.User;
+
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MainMenuPanel extends JPanel {
 
+	private boolean isSignedIn = false;
+	private JButton btnSignIn;
+	private JButton btnLogOut;
+	private User aUser;
+	
+	public void setSignIn(boolean status, User theUser) {
+		isSignedIn = status;
+		aUser = theUser;
+		changeButton();
+	}
+	
+	private void changeButton() {
+		if (isSignedIn) {
+			btnSignIn.setText(aUser.getDisplayName());
+			btnLogOut.setVisible(true);
+		} else {
+			btnSignIn.setText("Sign In");
+			btnLogOut.setVisible(false);
+		}
+	}
+	
 	/**
 	 * Create the panel.
 	 */
@@ -84,7 +108,7 @@ public class MainMenuPanel extends JPanel {
 		JLabel lblTile = new JLabel("Music Voyage");
 		lblTile.setForeground(Color.WHITE);
 		
-		JButton btnSignIn = new JButton("Sign In");
+		btnSignIn = new JButton("Sign In");
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LoginPanel loginInstance = new LoginPanel();
@@ -94,12 +118,17 @@ public class MainMenuPanel extends JPanel {
 				frame.printAll(frame.getGraphics());
 			}
 		});
+		
+		btnLogOut = new JButton("Log out");
+		btnLogOut.setVisible(false);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addComponent(lblTile)
-					.addPreferredGap(ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
+					.addComponent(btnLogOut)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSignIn))
 		);
 		gl_panel.setVerticalGroup(
@@ -107,7 +136,8 @@ public class MainMenuPanel extends JPanel {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTile)
-						.addComponent(btnSignIn))
+						.addComponent(btnSignIn)
+						.addComponent(btnLogOut))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
