@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class LoginPanel extends JPanel {
 
@@ -58,38 +59,49 @@ public class LoginPanel extends JPanel {
 			}
 		});
 		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainMenuPanel previous = new MainMenuPanel();
+				JFrame frame = (JFrame) getTopLevelAncestor();
+				frame.setContentPane(previous);
+				frame.repaint();
+				frame.printAll(frame.getGraphics());
+			}
+		});
+		
 		
 		GroupLayout gl_panel = new GroupLayout(this);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(125)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(btnLogIn)
-							.addContainerGap())
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(txtPassword, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-								.addComponent(txtUsername, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-							.addGap(132))))
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-					.addContainerGap(323, Short.MAX_VALUE)
-					.addComponent(btnNewUser))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnNewUser))
+						.addComponent(txtPassword, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+						.addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
+					.addGap(132))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(364, Short.MAX_VALUE)
+					.addComponent(btnCancel))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addComponent(btnNewUser)
+					.addComponent(btnCancel)
 					.addGap(43)
 					.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(txtPassword, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(28)
-					.addComponent(btnLogIn)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnLogIn)
+						.addComponent(btnNewUser))
 					.addGap(65))
 		);
 		this.setLayout(gl_panel);
 	}
-
 }
