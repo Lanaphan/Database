@@ -50,69 +50,37 @@ public class MainMenuPanel extends JPanel {
 		}
 	}
 	
-	private JPanel popularView() {
-		JPanel aView = new JPanel();
-		String bip = "/testFiles/testSong.mp3";
-		try{
-		    AudioInputStream audioInputStream =
-		        AudioSystem.getAudioInputStream(
-		            this.getClass().getResource(bip));
-		    Clip clip = AudioSystem.getClip();
-		    clip.open(audioInputStream);
-		    clip.start();
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		return aView;
-	}
-	
-	private JPanel genreView() {
-		JPanel aView = new JPanel();
-		
-		return aView;
-	}
-	
-	private JPanel releaseView() {
-		JPanel aView = new JPanel();
-		
-		return aView;
-	}
-	
-	private JPanel ourPickView() {
-		JPanel aView = new JPanel();
-		
-		return aView;
-	}
-	
 	private JPanel mainView() {
 		JPanel aView = new JPanel();
 		JButton btnPopular = new JButton("Popular");
 		btnPopular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				view = popularView();
+				new testMusic().initAndShowGUI();
+				
 			}
 		});
 		
 		JButton btnNewButton = new JButton("Genre");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				view = genreView();
+				testMusic start = new testMusic();
+				start.initAndShowGUI();
 			}
 		});
 		
 		JButton btnNew = new JButton("Just Released");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				view = releaseView();
+				testMusic start = new testMusic();
+				start.initAndShowGUI();
 			}
 		});
 		
 		JButton btnOurPick = new JButton("Our Pick");
 		btnOurPick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				view = ourPickView();
+				testMusic start = new testMusic();
+				start.initAndShowGUI();
 			}
 		});
 		
@@ -174,11 +142,14 @@ public class MainMenuPanel extends JPanel {
 		scrollable.setColumnHeaderView(panel);
 		
 		JTextField lblTile = new JTextField("Music Voyage");
-		lblTile.setForeground(Color.WHITE);
 		lblTile.setEditable(false);
+		lblTile.setForeground(Color.WHITE);
+		lblTile.setBackground(Color.BLUE);
+		lblTile.setBorder(null);
 		lblTile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				view = mainView();
+				System.out.println("Set to home");
 			}
 		});
 		
