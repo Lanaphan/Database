@@ -17,10 +17,6 @@ import model.User;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 public class MainMenuPanel extends JPanel {
 
 	private boolean isSignedIn = false;
@@ -56,31 +52,27 @@ public class MainMenuPanel extends JPanel {
 		btnPopular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new testMusic().initAndShowGUI();
-				
 			}
 		});
 		
 		JButton btnNewButton = new JButton("Genre");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testMusic start = new testMusic();
-				start.initAndShowGUI();
+				new testMusic().initAndShowGUI();
 			}
 		});
 		
 		JButton btnNew = new JButton("Just Released");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testMusic start = new testMusic();
-				start.initAndShowGUI();
+				new testMusic().initAndShowGUI();
 			}
 		});
 		
 		JButton btnOurPick = new JButton("Our Pick");
 		btnOurPick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testMusic start = new testMusic();
-				start.initAndShowGUI();
+				new testMusic().initAndShowGUI();
 			}
 		});
 		
