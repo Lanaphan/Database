@@ -17,8 +17,9 @@ import model.User;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class MainMenuPanel extends JPanel {
 
@@ -51,10 +52,19 @@ public class MainMenuPanel extends JPanel {
 	
 	private JPanel popularView() {
 		JPanel aView = new JPanel();
-		String bip = "testFiles/testSong.mp3";
-		Media hit = new Media(bip);
-		MediaPlayer mediaPlayer = new MediaPlayer(hit);
-		mediaPlayer.play();
+		String bip = "/testFiles/testSong.mp3";
+		try{
+		    AudioInputStream audioInputStream =
+		        AudioSystem.getAudioInputStream(
+		            this.getClass().getResource(bip));
+		    Clip clip = AudioSystem.getClip();
+		    clip.open(audioInputStream);
+		    clip.start();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		return aView;
 	}
 	
