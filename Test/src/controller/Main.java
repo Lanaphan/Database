@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		con = getConnection();
 		createTable();
-		insert();
+//		insert();
 
 	//OK TO DELETE, EXAMPLE PURPOSE ONLY
 	}	public static void insert() throws Exception {
