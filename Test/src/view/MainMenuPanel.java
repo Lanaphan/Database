@@ -2,9 +2,9 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,9 +14,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import model.User;
 
-import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class MainMenuPanel extends JPanel {
 
@@ -24,6 +26,7 @@ public class MainMenuPanel extends JPanel {
 	private JButton btnSignIn;
 	private JButton btnLogOut;
 	private User aUser;
+	private JPanel view;
 	
 	public void setSignIn(boolean status, User theUser) {
 		isSignedIn = status;
@@ -31,6 +34,11 @@ public class MainMenuPanel extends JPanel {
 		changeButton();
 	}
 	
+	/**
+	 * Changes the log in button to the display name of the user
+	 * and it also makes the logout button visible
+	 * Vice Versa
+	 */
 	private void changeButton() {
 		if (isSignedIn) {
 			btnSignIn.setText(aUser.getDisplayName());
@@ -41,21 +49,64 @@ public class MainMenuPanel extends JPanel {
 		}
 	}
 	
-	/**
-	 * Create the panel.
-	 */
-	public MainMenuPanel() {
-		JPanel view = new JPanel();
-		JScrollPane scrollable = new JScrollPane(view);
+	private JPanel popularView() {
+		JPanel aView = new JPanel();
+		String bip = "testFiles/testSong.mp3";
+		Media hit = new Media(bip);
+		MediaPlayer mediaPlayer = new MediaPlayer(hit);
+		mediaPlayer.play();
+		return aView;
+	}
+	
+	private JPanel genreView() {
+		JPanel aView = new JPanel();
 		
+		return aView;
+	}
+	
+	private JPanel releaseView() {
+		JPanel aView = new JPanel();
+		
+		return aView;
+	}
+	
+	private JPanel ourPickView() {
+		JPanel aView = new JPanel();
+		
+		return aView;
+	}
+	
+	private JPanel mainView() {
+		JPanel aView = new JPanel();
 		JButton btnPopular = new JButton("Popular");
+		btnPopular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				view = popularView();
+			}
+		});
 		
 		JButton btnNewButton = new JButton("Genre");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				view = genreView();
+			}
+		});
 		
 		JButton btnNew = new JButton("Just Released");
+		btnNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				view = releaseView();
+			}
+		});
 		
-		JButton btnProducersChoice = new JButton("<html>" + "Producer's<br>Choice" + "</html>");
-		GroupLayout gl_view = new GroupLayout(view);
+		JButton btnOurPick = new JButton("Our Pick");
+		btnOurPick.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				view = ourPickView();
+			}
+		});
+		
+		GroupLayout gl_view = new GroupLayout(aView);
 		gl_view.setHorizontalGroup(
 			gl_view.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_view.createSequentialGroup()
@@ -66,7 +117,7 @@ public class MainMenuPanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnNew, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnProducersChoice)
+					.addComponent(btnOurPick)
 					.addGap(40))
 		);
 		gl_view.setVerticalGroup(
@@ -74,18 +125,25 @@ public class MainMenuPanel extends JPanel {
 				.addGroup(gl_view.createSequentialGroup()
 					.addGap(36)
 					.addGroup(gl_view.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnProducersChoice, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+						.addComponent(btnOurPick, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
 						.addGroup(Alignment.LEADING, gl_view.createParallelGroup(Alignment.BASELINE)
 							.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
 							.addComponent(btnPopular, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
 						.addComponent(btnNew, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
 					.addGap(101))
 		);
-		view.setLayout(gl_view);
-		btnProducersChoice.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		aView.setLayout(gl_view);
+		return aView;
+	}
+	
+	/**
+	 * Create the panel.
+	 */
+	public MainMenuPanel() {
+		view = mainView();
+		JScrollPane scrollable = new JScrollPane(view);
+		
+		
 		scrollable.setSize(520, 300);
 		scrollable.setBackground(Color.BLUE);
 		
@@ -105,8 +163,14 @@ public class MainMenuPanel extends JPanel {
 		panel.setBackground(Color.BLUE);
 		scrollable.setColumnHeaderView(panel);
 		
-		JLabel lblTile = new JLabel("Music Voyage");
+		JTextField lblTile = new JTextField("Music Voyage");
 		lblTile.setForeground(Color.WHITE);
+		lblTile.setEditable(false);
+		lblTile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				view = mainView();
+			}
+		});
 		
 		btnSignIn = new JButton("Sign In");
 		btnSignIn.addActionListener(new ActionListener() {
