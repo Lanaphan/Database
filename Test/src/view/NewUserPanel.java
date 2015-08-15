@@ -1,15 +1,16 @@
 package view;
 
 import javax.swing.JPanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
-import model.User;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -17,17 +18,21 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import controller.Database;
+
 public class NewUserPanel extends JPanel {
 	private JTextField txtEmailAddress;
 	private JTextField txtPassword;
 	private JTextField txtConfirmPassword;
 	private JTextField txtBirthdayxxxxxxxx;
 	private JTextField txtDisplayName;
-
+	private Database database;
 	/**
 	 * Create the panel.
+	 * @throws Exception 
 	 */
-	public NewUserPanel() {
+	public NewUserPanel() throws Exception {
+		database = new Database();
 		
 		txtEmailAddress = new JTextField();
 		txtEmailAddress.setText("Email Address");
@@ -42,8 +47,8 @@ public class NewUserPanel extends JPanel {
 		txtConfirmPassword.setColumns(10);
 		
 		txtBirthdayxxxxxxxx = new JTextField();
-		txtBirthdayxxxxxxxx.setText("Birthday (xx/xx/xxxx)");
-		txtBirthdayxxxxxxxx.setColumns(10);
+		txtBirthdayxxxxxxxx.setText("Birthday (YYYY-MM-DD)");
+		txtBirthdayxxxxxxxx.setColumns(12);
 		
 		txtDisplayName = new JTextField();
 		txtDisplayName.setText("Display Name");
@@ -75,9 +80,14 @@ public class NewUserPanel extends JPanel {
 						String email = txtEmailAddress.getText();
 						String displayName = txtDisplayName.getText();
 						String dob = txtBirthdayxxxxxxxx.getText();
-						User createUser = new User(email, password, dob, displayName, false, false);
-						//TODO: Store in Database!!
-
+						try {
+							Connection con = database.getConnection();
+							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
+							insert.executeUpdate();
+						} catch (Exception error) {
+							System.out.println(error);
+						}
+			
 						// Display Finished Screen
 						FinishedNewUserPanel finish = new FinishedNewUserPanel();
 						JFrame frame = (JFrame) getTopLevelAncestor();
@@ -98,11 +108,18 @@ public class NewUserPanel extends JPanel {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 			    //Return back to Login Screen
-				LoginPanel back = new LoginPanel();
-				JFrame frame = (JFrame) getTopLevelAncestor();
-				frame.setContentPane(back);
-				frame.repaint();
-				frame.printAll(frame.getGraphics());
+				LoginPanel back;
+				try {
+					back = new LoginPanel();
+					JFrame frame = (JFrame) getTopLevelAncestor();
+					frame.setContentPane(back);
+					frame.repaint();
+					frame.printAll(frame.getGraphics());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 		

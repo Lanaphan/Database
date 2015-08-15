@@ -12,8 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import model.User;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -21,17 +19,18 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import controller.Database;
+
 public class MainMenuPanel extends JPanel {
 
 	private boolean isSignedIn = false;
 	private JButton btnSignIn;
 	private JButton btnLogOut;
-	private User aUser;
+
 	private JPanel view;
 	
-	public void setSignIn(boolean status, User theUser) {
+	public void setSignIn(boolean status) {
 		isSignedIn = status;
-		aUser = theUser;
 		changeButton();
 	}
 	
@@ -156,11 +155,18 @@ public class MainMenuPanel extends JPanel {
 		btnSignIn = new JButton("Sign In");
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoginPanel loginInstance = new LoginPanel();
-				JFrame frame = (JFrame) getTopLevelAncestor();
-				frame.setContentPane(loginInstance);
-				frame.repaint();
-				frame.printAll(frame.getGraphics());
+				LoginPanel loginInstance;
+				try {
+					loginInstance = new LoginPanel();
+					JFrame frame = (JFrame) getTopLevelAncestor();
+					frame.setContentPane(loginInstance);
+					frame.repaint();
+					frame.printAll(frame.getGraphics());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 		

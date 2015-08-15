@@ -3,6 +3,9 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -13,16 +16,19 @@ import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import controller.Database;
+
 public class LoginPanel extends JPanel {
 
 	private JTextField txtUsername;
 	private JTextField txtPassword;
-	
+	private Database database;
 	/**
 	 * Create the panel.
+	 * @throws Exception 
 	 */
-	public LoginPanel() {
-		
+	public LoginPanel() throws Exception {
+		database = new Database();
 		txtUsername = new JTextField();
 		txtUsername.setText("Username");
 		txtUsername.setColumns(10);
@@ -41,7 +47,23 @@ public class LoginPanel extends JPanel {
 					JOptionPane.showMessageDialog(getParent(),
 						    "Please enter a valid email address.");
 				} else {
-					//TODO: Check database to match email and password
+					try {
+						Connection con = database.getConnection();
+						PreparedStatement select = con.prepareStatement ("SELECT password FROM User WHERE email = '"+username+"';");
+						ResultSet result = select.executeQuery();
+						result.next();
+						String testPassword = result.getString("password");
+						if (testPassword.equals(password)) {
+							//you've signed in
+							System.out.println(testPassword);
+						} else {
+							JOptionPane.showMessageDialog(getParent(),
+								    "Password is wrong!");
+						}
+					} catch (Exception error) {
+						System.out.println("This username does not exist");
+					}
+		
 					
 				}
 			}
@@ -51,11 +73,15 @@ public class LoginPanel extends JPanel {
 		btnNewUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 			    //New User Screen
+				try {
 				NewUserPanel aUser = new NewUserPanel();
 				JFrame frame = (JFrame) getTopLevelAncestor();
 				frame.setContentPane(aUser);
 				frame.repaint();
 				frame.printAll(frame.getGraphics());
+				} catch (Exception error) {
+					System.out.println(error);
+				}
 			}
 		});
 		
