@@ -55,6 +55,7 @@ public class LoginPanel extends JPanel {
 						String testPassword = result.getString("password");
 						if (testPassword.equals(password)) {
 							//you've signed in
+							//prompt new screen
 							System.out.println(testPassword);
 						} else {
 							JOptionPane.showMessageDialog(getParent(),
