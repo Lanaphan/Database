@@ -3,6 +3,10 @@ package view;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -32,22 +36,52 @@ public class NewUserPanel extends JPanel {
 		txtEmailAddress = new JTextField();
 		txtEmailAddress.setText("Email Address");
 		txtEmailAddress.setColumns(10);
+		txtEmailAddress.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                txtEmailAddress.setText("");
+            }
+        });
 		
 		txtPassword = new JTextField();
 		txtPassword.setText("Password");
 		txtPassword.setColumns(10);
+		txtPassword.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+            	txtPassword.setText("");
+            }
+        });
 		
 		txtConfirmPassword = new JTextField();
 		txtConfirmPassword.setText("Confirm Password");
 		txtConfirmPassword.setColumns(10);
+		txtConfirmPassword.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+            	txtConfirmPassword.setText("");
+            }
+        });
 		
 		txtBirthdayxxxxxxxx = new JTextField();
 		txtBirthdayxxxxxxxx.setText("Birthday (xx/xx/xxxx)");
 		txtBirthdayxxxxxxxx.setColumns(10);
+		txtBirthdayxxxxxxxx.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+            	txtBirthdayxxxxxxxx.setText("");
+            }
+        });
 		
 		txtDisplayName = new JTextField();
 		txtDisplayName.setText("Display Name");
 		txtDisplayName.setColumns(10);
+		txtDisplayName.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+            	txtDisplayName.setText("");
+            }
+        });
 		
 		JCheckBox chckbxMusicArtist = new JCheckBox("Music Artist");
 		
@@ -59,13 +93,77 @@ public class NewUserPanel extends JPanel {
 			    //Check booleans
 				if (chckbxMusicArtist.isSelected() && !chckbxProducer.isSelected()) {
 					//Music artist only
+					String recordCompany = JOptionPane.showInputDialog(getParent(),
+						    "Who is your record company? (Leave blank if not signed).");
+					
+					String password = txtPassword.getText();
+					String copyPassword = txtConfirmPassword.getText();
+					if (password.equals(copyPassword)) {
+						// Creating normal user
+						String email = txtEmailAddress.getText();
+						String displayName = txtDisplayName.getText();
+						String dob = txtBirthdayxxxxxxxx.getText();
+						User createUser = new User(email, password, dob, displayName, true, false);
+						try {
+							Connection con = database.getConnection();
+							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
+							insert.executeUpdate();
+							insert = con.prepareStatement("INSERT INTO Artist VALUES ('" + recordCompany + "', '" + email + "');");
+							insert.executeUpdate();
+						} catch (Exception error) {
+							System.out.println(error);
+						}
+
+						// Display Finished Screen
+						FinishedNewUserPanel finish = new FinishedNewUserPanel();
+						JFrame frame = (JFrame) getTopLevelAncestor();
+						frame.setContentPane(finish);
+						frame.repaint();
+						frame.printAll(frame.getGraphics());
+					} else {
+						JOptionPane.showMessageDialog(getParent(),
+							    "Passwords do not match.");
+					}	
+						
 					
 				} else if (!chckbxMusicArtist.isSelected() && chckbxProducer.isSelected()) {
 					//Producer only
+					String companyName = JOptionPane.showInputDialog(getParent(),
+						    "What is your company name?");
+					String contactInfo = JOptionPane.showInputDialog(getParent(), 
+							"Contact Information?");
+					
+					String password = txtPassword.getText();
+					String copyPassword = txtConfirmPassword.getText();
+					if (password.equals(copyPassword)) {
+						// Creating normal user
+						String email = txtEmailAddress.getText();
+						String displayName = txtDisplayName.getText();
+						String dob = txtBirthdayxxxxxxxx.getText();
+						User createUser = new User(email, password, dob, displayName, false, true);
+						try {
+							Connection con = database.getConnection();
+							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
+							insert.executeUpdate();
+							insert = con.prepareStatement("INSERT INTO Producer VALUES ('" + email + "', '" + companyName + "', '" + contactInfo + "');");
+						} catch (Exception error) {
+							System.out.println(error);
+						}
+
+						// Display Finished Screen
+						FinishedNewUserPanel finish = new FinishedNewUserPanel();
+						JFrame frame = (JFrame) getTopLevelAncestor();
+						frame.setContentPane(finish);
+						frame.repaint();
+						frame.printAll(frame.getGraphics());
+					} else {
+						JOptionPane.showMessageDialog(getParent(),
+							    "Passwords do not match.");
+					}
 					
 				} else if (chckbxMusicArtist.isSelected() && chckbxProducer.isSelected()) {
 					//Both
-					
+					JOptionPane.showMessageDialog(getParent(), "Cannot be both a artist and a producer");
 				} else {
 					//None
 					String password = txtPassword.getText();
@@ -75,9 +173,14 @@ public class NewUserPanel extends JPanel {
 						String email = txtEmailAddress.getText();
 						String displayName = txtDisplayName.getText();
 						String dob = txtBirthdayxxxxxxxx.getText();
-						User createUser = new User(email, password, dob, displayName, false, false);
-						//TODO: Store in Database!!
-
+						try {
+							Connection con = database.getConnection();
+							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
+							insert.executeUpdate();
+						} catch (Exception error) {
+							System.out.println(error);
+						}
+			
 						// Display Finished Screen
 						FinishedNewUserPanel finish = new FinishedNewUserPanel();
 						JFrame frame = (JFrame) getTopLevelAncestor();

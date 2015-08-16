@@ -1,8 +1,9 @@
 package view;
 
-import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.*;
 import javafx.application.Platform;
 import javafx.beans.value.*;
@@ -20,9 +21,10 @@ import javax.swing.*;
  * Example of playing all mp3 audio files in a given directory using a JavaFX
  * MediaView launched from Swing
  */
-public class testMusic {
+public class MusicPlayer {
 
 	private static SceneGenerator aGen;
+	private static List<String> songs;
 
 	public static void initAndShowGUI() {
 		// This method is invoked on Swing thread
@@ -47,21 +49,19 @@ public class testMusic {
 		});
 	}
 
+	public void setMusic(List<String> songs) {
+		this.songs = new ArrayList<String>();
+		this.songs.addAll(songs);
+	}
+	
 	private static void initFX(JFXPanel fxPanel) {
 		// This method is invoked on JavaFX thread
 		aGen = new SceneGenerator();
-
+		aGen.listOfSongs = new ArrayList<String>();
+		aGen.listOfSongs.addAll(songs);
 		Scene scene = aGen.createScene();
 		fxPanel.setScene(scene);
 	}
-
-	// public static void main(String[] args) {
-	// SwingUtilities.invokeLater(new Runnable() {
-	// @Override public void run() {
-	// initAndShowGUI();
-	// }
-	// });
-	// }
 }
 
 class SceneGenerator {
@@ -69,13 +69,15 @@ class SceneGenerator {
 	final ProgressBar progress = new ProgressBar();
 	private MediaView mediaView;
 	private ChangeListener<Duration> progressChangeListener;
+	public List<String> listOfSongs;
+	private int location = 0;
 
 	SceneGenerator() {
-
 	}
 
 	public Scene createScene() {
 		final StackPane layout = new StackPane();
+		
 
 		// determine the source directory for the playlist
 		final File dir = new File("/Users/uwtlocaladmin/git/database/Test/testFiles");
@@ -87,12 +89,7 @@ class SceneGenerator {
 
 		// create some media players.
 		final List<MediaPlayer> players = new ArrayList<MediaPlayer>();
-		for (String file : dir.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".mp3");
-			}
-		}))
+		for (String file : listOfSongs) 
 			players.add(createPlayer("file:///" + (dir + "\\" + file).replace("\\", "/").replaceAll(" ", "%20")));
 		if (players.isEmpty()) {
 			System.out.println("No audio found in " + dir);
@@ -109,6 +106,7 @@ class SceneGenerator {
 
 		// play each audio file in turn.
 		for (int i = 0; i < players.size(); i++) {
+			location = i;
 			final MediaPlayer player = players.get(i);
 			final MediaPlayer nextPlayer = players.get((i + 1) % players.size());
 			player.setOnEndOfMedia(new Runnable() {
@@ -163,8 +161,19 @@ class SceneGenerator {
 		message.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				// TODO: Contact person
+				// TODO: Contact person by sending message to artist's database
+				SwingUtilities.invokeLater( new Runnable() 
+				{
 
+					@Override
+					public void run() {
+						String message = JOptionPane.showInputDialog(null,
+							    "Enter your message below.");
+						
+					}
+				} );
+				
+				
 			}
 		});
 
@@ -221,8 +230,27 @@ class SceneGenerator {
 		String source = newPlayer.getMedia().getSource();
 		source = source.substring(0, source.length() - ".mp4".length());
 		source = source.substring(source.lastIndexOf("/") + 1).replaceAll("%20", " ");
-		currentlyPlaying.setText("Artist: " + "A Artist" + "\nSong: " + "A Song");
-		// TODO: Change to make it display actual artist and song
+		String title;
+		String artist;
+		try {
+			Connection con = database.getConnection();
+			PreparedStatement select = con.prepareStatement ("SELECT title, user_email FROM Music WHERE filename = '"+listOfSongs.get(location)+"';");
+			ResultSet result = select.executeQuery();
+			result.next();
+			
+			title = result.getString(0);
+			String email = result.getString(1);
+			
+			select = con.prepareStatement("SELECT display_name FROM User WHERE email = '" + email + "';");
+			result = select.executeQuery();
+			result.next();
+			artist = result.toString();
+			
+		} catch (Exception error) {
+			System.out.println("Song doesn't exist");
+		}
+		
+		currentlyPlaying.setText("Artist: " + artist + "\nSong: " + title);
 	}
 
 	public void stopMusic() {

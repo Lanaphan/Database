@@ -15,6 +15,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import model.User;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class MainMenuPanel extends JPanel {
@@ -22,13 +29,11 @@ public class MainMenuPanel extends JPanel {
 	private boolean isSignedIn = false;
 	private JButton btnSignIn;
 	private JButton btnLogOut;
-	private User aUser;
 	private JPanel view;
 	
-	public void setSignIn(boolean status, User theUser) {
+	public void setSignIn(boolean status, String email) {
 		isSignedIn = status;
-		aUser = theUser;
-		changeButton();
+		changeButton(email);
 	}
 	
 	/**
@@ -36,9 +41,17 @@ public class MainMenuPanel extends JPanel {
 	 * and it also makes the logout button visible
 	 * Vice Versa
 	 */
-	private void changeButton() {
+	private void changeButton(String email) {
 		if (isSignedIn) {
-			btnSignIn.setText(aUser.getDisplayName());
+			
+			Connection con = database.getConnection();
+			PreparedStatement select = con.prepareStatement ("SELECT display_name FROM User WHERE email = '"+ email  +"';");
+			ResultSet result = select.executeQuery();
+			result.next();
+			
+			String username = result.toString();
+			
+			btnSignIn.setText(username);
 			btnLogOut.setVisible(true);
 		} else {
 			btnSignIn.setText("Sign In");
@@ -51,28 +64,49 @@ public class MainMenuPanel extends JPanel {
 		JButton btnPopular = new JButton("Popular");
 		btnPopular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new testMusic().initAndShowGUI();
+				//TODO: Grab songs to push into music player
+				List<String> songs =  new ArrayList<String>();
+				songs.add("testSong.mp3");
+				songs.add("testSong2.mp3");
+			    MusicPlayer player = new MusicPlayer();
+			    player.setMusic(songs);
+			    player.initAndShowGUI();
 			}
 		});
 		
 		JButton btnNewButton = new JButton("Genre");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new testMusic().initAndShowGUI();
+				List<String> songs =  new ArrayList<String>();
+				songs.add("testSong.mp3");
+				songs.add("testSong2.mp3");
+			    MusicPlayer player = new MusicPlayer();
+			    player.setMusic(songs);
+			    player.initAndShowGUI();
 			}
 		});
 		
 		JButton btnNew = new JButton("Just Released");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new testMusic().initAndShowGUI();
+				List<String> songs =  new ArrayList<String>();
+				songs.add("testSong.mp3");
+				songs.add("testSong2.mp3");
+			    MusicPlayer player = new MusicPlayer();
+			    player.setMusic(songs);
+			    player.initAndShowGUI();
 			}
 		});
 		
 		JButton btnOurPick = new JButton("Our Pick");
 		btnOurPick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new testMusic().initAndShowGUI();
+				List<String> songs =  new ArrayList<String>();
+				songs.add("testSong.mp3");
+				songs.add("testSong2.mp3");
+			    MusicPlayer player = new MusicPlayer();
+			    player.setMusic(songs);
+			    player.initAndShowGUI();
 			}
 		});
 		
@@ -138,12 +172,13 @@ public class MainMenuPanel extends JPanel {
 		lblTile.setForeground(Color.WHITE);
 		lblTile.setBackground(Color.BLUE);
 		lblTile.setBorder(null);
-		lblTile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				view = mainView();
+		lblTile.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+            	view = mainView();
 				System.out.println("Set to home");
-			}
-		});
+            }
+        });
 		
 		btnSignIn = new JButton("Sign In");
 		btnSignIn.addActionListener(new ActionListener() {
