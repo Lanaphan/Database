@@ -41,7 +41,7 @@ public class MainMenuPanel extends JPanel {
 	 */
 	private void changeButton() {
 		if (isSignedIn) {
-			btnSignIn.setText(aUser.getDisplayName());
+//			btnSignIn.setText(aUser.getDisplayName());
 			btnLogOut.setVisible(true);
 		} else {
 			btnSignIn.setText("Sign In");
