@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.JPanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,13 +14,13 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import model.User;
-
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import controller.Database;
 
 public class NewUserPanel extends JPanel {
 	private JTextField txtEmailAddress;
@@ -27,11 +28,13 @@ public class NewUserPanel extends JPanel {
 	private JTextField txtConfirmPassword;
 	private JTextField txtBirthdayxxxxxxxx;
 	private JTextField txtDisplayName;
-
+	private Database database;
 	/**
 	 * Create the panel.
+	 * @throws Exception 
 	 */
-	public NewUserPanel() {
+	public NewUserPanel() throws Exception {
+		database = new Database();
 		
 		txtEmailAddress = new JTextField();
 		txtEmailAddress.setText("Email Address");
@@ -64,8 +67,8 @@ public class NewUserPanel extends JPanel {
         });
 		
 		txtBirthdayxxxxxxxx = new JTextField();
-		txtBirthdayxxxxxxxx.setText("Birthday (xx/xx/xxxx)");
-		txtBirthdayxxxxxxxx.setColumns(10);
+		txtBirthdayxxxxxxxx.setText("Birthday (YYYY-MM-DD)");
+		txtBirthdayxxxxxxxx.setColumns(12);
 		txtBirthdayxxxxxxxx.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
@@ -103,7 +106,6 @@ public class NewUserPanel extends JPanel {
 						String email = txtEmailAddress.getText();
 						String displayName = txtDisplayName.getText();
 						String dob = txtBirthdayxxxxxxxx.getText();
-						User createUser = new User(email, password, dob, displayName, true, false);
 						try {
 							Connection con = database.getConnection();
 							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
@@ -140,7 +142,6 @@ public class NewUserPanel extends JPanel {
 						String email = txtEmailAddress.getText();
 						String displayName = txtDisplayName.getText();
 						String dob = txtBirthdayxxxxxxxx.getText();
-						User createUser = new User(email, password, dob, displayName, false, true);
 						try {
 							Connection con = database.getConnection();
 							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
@@ -201,11 +202,18 @@ public class NewUserPanel extends JPanel {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 			    //Return back to Login Screen
-				LoginPanel back = new LoginPanel();
-				JFrame frame = (JFrame) getTopLevelAncestor();
-				frame.setContentPane(back);
-				frame.repaint();
-				frame.printAll(frame.getGraphics());
+				LoginPanel back;
+				try {
+					back = new LoginPanel();
+					JFrame frame = (JFrame) getTopLevelAncestor();
+					frame.setContentPane(back);
+					frame.repaint();
+					frame.printAll(frame.getGraphics());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 		

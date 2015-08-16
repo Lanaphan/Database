@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.Database;
+
 public class StartingFrame extends JFrame {
 
 
@@ -31,8 +33,9 @@ public class StartingFrame extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws Exception 
 	 */
-	public StartingFrame() {
+	public StartingFrame() throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 520, 322);
 		contentPane = new JPanel();

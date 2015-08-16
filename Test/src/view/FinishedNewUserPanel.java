@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import controller.Database;
+
 public class FinishedNewUserPanel extends JPanel {
 	
 	/**
@@ -26,11 +28,18 @@ public class FinishedNewUserPanel extends JPanel {
 		btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 			    //go to log in screen
-				LoginPanel newLoginInstance = new LoginPanel();
-				JFrame frame = (JFrame) getTopLevelAncestor();
-				frame.setContentPane(newLoginInstance);
-				frame.repaint();
-				frame.printAll(frame.getGraphics());
+				LoginPanel newLoginInstance;
+				try {
+					newLoginInstance = new LoginPanel();
+					JFrame frame = (JFrame) getTopLevelAncestor();
+					frame.setContentPane(newLoginInstance);
+					frame.repaint();
+					frame.printAll(frame.getGraphics());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
