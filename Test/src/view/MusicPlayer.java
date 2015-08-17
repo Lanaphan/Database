@@ -80,6 +80,7 @@ class SceneGenerator {
 	private ChangeListener<Duration> progressChangeListener;
 	public List<String> listOfSongs;
 	private int location = 0;
+	private int size = 0;
 
 	SceneGenerator() {
 	}
@@ -89,7 +90,7 @@ class SceneGenerator {
 		
 
 		// determine the source directory for the playlist
-		final File dir = new File("/Users/uwtlocaladmin/git/database/Test/testFiles");
+		final File dir = new File("C:\\Users\\Lana\\git\\newDatabase\\Test\\testFiles");
 		if (!dir.exists() || !dir.isDirectory()) {
 			System.out.println("Cannot find video source directory: " + dir);
 			Platform.exit();
@@ -115,7 +116,7 @@ class SceneGenerator {
 
 		// play each audio file in turn.
 		for (int i = 0; i < players.size(); i++) {
-			location = i;
+			size = players.size();
 			final MediaPlayer player = players.get(i);
 			final MediaPlayer nextPlayer = players.get((i + 1) % players.size());
 			player.setOnEndOfMedia(new Runnable() {
@@ -132,6 +133,9 @@ class SceneGenerator {
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
+				location++;
+				if (location == size)
+					location = 0;
 				final MediaPlayer curPlayer = mediaView.getMediaPlayer();
 				MediaPlayer nextPlayer = players.get((players.indexOf(curPlayer) + 1) % players.size());
 				mediaView.setMediaPlayer(nextPlayer);
@@ -163,6 +167,27 @@ class SceneGenerator {
 				} else {
 					// TODO: Add like counter
 					like.setText("Liked");
+					Database database;
+					try {
+						database = new Database();
+						Connection con = database.getConnection();
+						PreparedStatement update = con.prepareStatement("SELECT like_counter FROM Music WHERE filename = '"+ listOfSongs.get(location) +"';");
+						
+						ResultSet result = update.executeQuery();
+						result.next();
+						Integer likeCount = result.getInt("like_counter");
+						likeCount++;
+						
+						PreparedStatement updateLike = con.prepareStatement("UPDATE Music SET like_counter='"+likeCount+"' WHERE filename='" + listOfSongs.get(location) + "';");
+						
+						updateLike.executeUpdate();
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					
 				}
 			}
 		});
@@ -255,13 +280,13 @@ class SceneGenerator {
 			ResultSet result = select.executeQuery();
 			result.next();
 			
-			title = result.getString(0);
-			String email = result.getString(1);
+			title = result.getString("title");
+			String email = result.getString("user_email");
 			
 			select = con.prepareStatement("SELECT display_name FROM User WHERE email = '" + email + "';");
 			result = select.executeQuery();
 			result.next();
-			artist = result.toString();
+			artist = result.getString("display_name");
 			currentlyPlaying.setText("Artist: " + artist + "\nSong: " + title);
 		} catch (Exception error) {
 			System.out.println("Song doesn't exist");
