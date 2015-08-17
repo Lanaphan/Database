@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 
 
 
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -38,7 +39,6 @@ public class MainMenuPanel extends JPanel {
 	private JButton btnSignIn;
 	private JButton btnLogOut;
 	private JPanel view;
-	private Database database;
 
 	public void setSignIn(boolean status, String email) throws Exception {
 		isSignedIn = status;
@@ -53,7 +53,7 @@ public class MainMenuPanel extends JPanel {
 	 */
 	private void changeButton(String email) throws Exception {
 		if (isSignedIn) {
-			database = new Database();
+			Database database = new Database();
 			Connection con = database.getConnection();
 			PreparedStatement select = con.prepareStatement ("SELECT display_name FROM User WHERE email = '"+ email  +"';");
 			ResultSet result = select.executeQuery();
@@ -75,11 +75,23 @@ public class MainMenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				//TODO: Grab songs to push into music player
 				List<String> songs =  new ArrayList<String>();
-				songs.add("testSong.mp3");
-				songs.add("testSong2.mp3");
-			    MusicPlayer player = new MusicPlayer();
-			    player.setMusic(songs);
-			    player.initAndShowGUI();
+				try {
+					Database database = new Database();
+					Connection con = database.getConnection();
+					PreparedStatement update = con.prepareStatement("SELECT filename FROM Music ORDER BY like_counter DESC;");
+					
+					ResultSet result = update.executeQuery();
+					while (result.next()) {
+						String filename = result.getString("filename");
+						songs.add(filename);
+					}
+				    MusicPlayer player = new MusicPlayer();
+				    player.setMusic(songs);
+				    player.initAndShowGUI();
+				} catch (Exception error) {
+					System.out.println(error);
+				}
+
 			}
 		});
 		
@@ -87,11 +99,23 @@ public class MainMenuPanel extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String> songs =  new ArrayList<String>();
-				songs.add("testSong.mp3");
-				songs.add("testSong2.mp3");
-			    MusicPlayer player = new MusicPlayer();
-			    player.setMusic(songs);
-			    player.initAndShowGUI();
+				try {
+					Database database = new Database();
+					Connection con = database.getConnection();
+					PreparedStatement update = con.prepareStatement("SELECT filename FROM Music ORDER BY genre;");
+					
+					ResultSet result = update.executeQuery();
+					while (result.next()) {
+						String filename = result.getString("filename");
+						songs.add(filename);
+					}
+				    MusicPlayer player = new MusicPlayer();
+				    player.setMusic(songs);
+				    player.initAndShowGUI();
+				} catch (Exception error) {
+					System.out.println(error);
+				}
+
 			}
 		});
 		
@@ -99,11 +123,22 @@ public class MainMenuPanel extends JPanel {
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String> songs =  new ArrayList<String>();
-				songs.add("testSong.mp3");
-				songs.add("testSong2.mp3");
-			    MusicPlayer player = new MusicPlayer();
-			    player.setMusic(songs);
-			    player.initAndShowGUI();
+				try {
+					Database database = new Database();
+					Connection con = database.getConnection();
+					PreparedStatement update = con.prepareStatement("SELECT filename FROM Music ORDER BY year DESC;");
+					
+					ResultSet result = update.executeQuery();
+					while (result.next()) {
+						String filename = result.getString("filename");
+						songs.add(filename);
+					}
+				    MusicPlayer player = new MusicPlayer();
+				    player.setMusic(songs);
+				    player.initAndShowGUI();
+				} catch (Exception error) {
+					System.out.println(error);
+				}
 			}
 		});
 		
@@ -111,11 +146,22 @@ public class MainMenuPanel extends JPanel {
 		btnOurPick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String> songs =  new ArrayList<String>();
-				songs.add("testSong.mp3");
-				songs.add("testSong2.mp3");
-			    MusicPlayer player = new MusicPlayer();
-			    player.setMusic(songs);
-			    player.initAndShowGUI();
+				try {
+					Database database = new Database();
+					Connection con = database.getConnection();
+					PreparedStatement update = con.prepareStatement("SELECT filename FROM Music;");
+					
+					ResultSet result = update.executeQuery();
+					while (result.next()) {
+						String filename = result.getString("filename");
+						songs.add(filename);
+					}
+				    MusicPlayer player = new MusicPlayer();
+				    player.setMusic(songs);
+				    player.initAndShowGUI();
+				} catch (Exception error) {
+					System.out.println(error);
+				}
 			}
 		});
 		
@@ -176,7 +222,7 @@ public class MainMenuPanel extends JPanel {
 		panel.setBackground(Color.BLUE);
 		scrollable.setColumnHeaderView(panel);
 		
-		JTextField lblTile = new JTextField("Music Voyage");
+		JTextField lblTile = new JTextField("Music Voyager");
 		lblTile.setEditable(false);
 		lblTile.setForeground(Color.WHITE);
 		lblTile.setBackground(Color.BLUE);
