@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 
 
 
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -57,8 +58,7 @@ public class MainMenuPanel extends JPanel {
 			PreparedStatement select = con.prepareStatement ("SELECT display_name FROM User WHERE email = '"+ email  +"';");
 			ResultSet result = select.executeQuery();
 			result.next();
-			
-			String username = result.toString();
+			String username = result.getString("display_name");
 			
 			btnSignIn.setText(username);
 			btnLogOut.setVisible(true);
