@@ -144,19 +144,23 @@ public class NewUserPanel extends JPanel {
 						String dob = txtBirthdayxxxxxxxx.getText();
 						try {
 							Connection con = database.getConnection();
-							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
-							insert.executeUpdate();
-							insert = con.prepareStatement("INSERT INTO Producer VALUES ('" + email + "', '" + companyName + "', '" + contactInfo + "');");
+//							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
+//							insert.executeUpdate();
+							
+							Connection conPro = database.getConnection()
+							PreparedStatement insertPro = con.prepareStatement("INSERT INTO Producer VALUES ('" + email + "', '" + companyName + "', '" + contactInfo + "');");
+							insertPro.executeUpdate();
+							// Display Finished Screen
+							FinishedNewUserPanel finish = new FinishedNewUserPanel();
+							JFrame frame = (JFrame) getTopLevelAncestor();
+							frame.setContentPane(finish);
+							frame.repaint();
+							frame.printAll(frame.getGraphics());
 						} catch (Exception error) {
 							System.out.println(error);
+//							JOptionPane.showMessageDialog(getParent(),
+//								    "This email address has already been registered!");
 						}
-
-						// Display Finished Screen
-						FinishedNewUserPanel finish = new FinishedNewUserPanel();
-						JFrame frame = (JFrame) getTopLevelAncestor();
-						frame.setContentPane(finish);
-						frame.repaint();
-						frame.printAll(frame.getGraphics());
 					} else {
 						JOptionPane.showMessageDialog(getParent(),
 							    "Passwords do not match.");
@@ -178,16 +182,18 @@ public class NewUserPanel extends JPanel {
 							Connection con = database.getConnection();
 							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
 							insert.executeUpdate();
+						
+							// Display Finished Screen
+							FinishedNewUserPanel finish = new FinishedNewUserPanel();
+							JFrame frame = (JFrame) getTopLevelAncestor();
+							frame.setContentPane(finish);
+							frame.repaint();
+							frame.printAll(frame.getGraphics());
 						} catch (Exception error) {
-							System.out.println(error);
+							JOptionPane.showMessageDialog(getParent(),
+								    "This email address has already been registered!");
 						}
-			
-						// Display Finished Screen
-						FinishedNewUserPanel finish = new FinishedNewUserPanel();
-						JFrame frame = (JFrame) getTopLevelAncestor();
-						frame.setContentPane(finish);
-						frame.repaint();
-						frame.printAll(frame.getGraphics());
+		
 					} else {
 						JOptionPane.showMessageDialog(getParent(),
 							    "Passwords do not match.");
