@@ -111,17 +111,29 @@ public class NewUserPanel extends JPanel {
 							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
 							insert.executeUpdate();
 					
+						} catch (Exception error) {
+							System.out.println(error);
+//							JOptionPane.showMessageDialog(getParent(),
+////								    "This email address has already been registered!");
+						}
+						
+						try {
+							Connection con = database.getConnection();
+							
+							PreparedStatement insertArt = con.prepareStatement("INSERT INTO Artist VALUES ('" + email + "', '" + recordCompany + "');");
+							insertArt.executeUpdate();
 							// Display Finished Screen
 							FinishedNewUserPanel finish = new FinishedNewUserPanel();
 							JFrame frame = (JFrame) getTopLevelAncestor();
 							frame.setContentPane(finish);
 							frame.repaint();
 							frame.printAll(frame.getGraphics());
-							
 						} catch (Exception error) {
-							JOptionPane.showMessageDialog(getParent(),
-								    "This email address has already been registered!");
+							System.out.println(error);
+//							JOptionPane.showMessageDialog(getParent(),
+//								    "This email address has already been registered!");
 						}
+						
 					} else {
 						JOptionPane.showMessageDialog(getParent(),
 							    "Passwords do not match.");
@@ -147,8 +159,6 @@ public class NewUserPanel extends JPanel {
 							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
 							insert.executeUpdate();
 							
-							PreparedStatement insertPro = con.prepareStatement("INSERT INTO Producer VALUES ('" + email + "', '" + companyName + "', '" + contactInfo + "');");
-							insertPro.executeUpdate();
 						} catch (Exception error) {
 							System.out.println(error);
 //							JOptionPane.showMessageDialog(getParent(),
