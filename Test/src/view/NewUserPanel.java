@@ -112,9 +112,7 @@ public class NewUserPanel extends JPanel {
 							insert.executeUpdate();
 					
 						} catch (Exception error) {
-							System.out.println(error);
-//							JOptionPane.showMessageDialog(getParent(),
-////								    "This email address has already been registered!");
+
 						}
 						
 						try {
@@ -129,9 +127,7 @@ public class NewUserPanel extends JPanel {
 							frame.repaint();
 							frame.printAll(frame.getGraphics());
 						} catch (Exception error) {
-							System.out.println(error);
-//							JOptionPane.showMessageDialog(getParent(),
-//								    "This email address has already been registered!");
+
 						}
 						
 					} else {
@@ -160,9 +156,7 @@ public class NewUserPanel extends JPanel {
 							insert.executeUpdate();
 							
 						} catch (Exception error) {
-							System.out.println(error);
-//							JOptionPane.showMessageDialog(getParent(),
-//								    "This email address has already been registered!");
+
 						}
 						try {
 							Connection con = database.getConnection();
@@ -176,9 +170,7 @@ public class NewUserPanel extends JPanel {
 							frame.repaint();
 							frame.printAll(frame.getGraphics());
 						} catch (Exception error) {
-							System.out.println(error);
-//							JOptionPane.showMessageDialog(getParent(),
-//								    "This email address has already been registered!");
+
 						}
 					} else {
 						JOptionPane.showMessageDialog(getParent(),
