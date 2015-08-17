@@ -110,22 +110,22 @@ public class NewUserPanel extends JPanel {
 							Connection con = database.getConnection();
 							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
 							insert.executeUpdate();
-							insert = con.prepareStatement("INSERT INTO Artist VALUES ('" + recordCompany + "', '" + email + "');");
-							insert.executeUpdate();
+					
+							// Display Finished Screen
+							FinishedNewUserPanel finish = new FinishedNewUserPanel();
+							JFrame frame = (JFrame) getTopLevelAncestor();
+							frame.setContentPane(finish);
+							frame.repaint();
+							frame.printAll(frame.getGraphics());
+							
 						} catch (Exception error) {
-							System.out.println(error);
+							JOptionPane.showMessageDialog(getParent(),
+								    "This email address has already been registered!");
 						}
-
-						// Display Finished Screen
-						FinishedNewUserPanel finish = new FinishedNewUserPanel();
-						JFrame frame = (JFrame) getTopLevelAncestor();
-						frame.setContentPane(finish);
-						frame.repaint();
-						frame.printAll(frame.getGraphics());
 					} else {
 						JOptionPane.showMessageDialog(getParent(),
 							    "Passwords do not match.");
-					}	
+					}
 						
 					
 				} else if (!chckbxMusicArtist.isSelected() && chckbxProducer.isSelected()) {

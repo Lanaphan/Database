@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+
 import javafx.application.Platform;
 import javafx.beans.value.*;
 import javafx.embed.swing.JFXPanel;
@@ -15,7 +16,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.media.*;
 import javafx.util.Duration;
+
 import javax.swing.*;
+
+import controller.Database;
 
 /**
  * Example of playing all mp3 audio files in a given directory using a JavaFX
@@ -44,7 +48,12 @@ public class MusicPlayer {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				initFX(fxPanel);
+				try {
+					initFX(fxPanel);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -54,7 +63,7 @@ public class MusicPlayer {
 		this.songs.addAll(songs);
 	}
 	
-	private static void initFX(JFXPanel fxPanel) {
+	private static void initFX(JFXPanel fxPanel) throws Exception {
 		// This method is invoked on JavaFX thread
 		aGen = new SceneGenerator();
 		aGen.listOfSongs = new ArrayList<String>();
@@ -75,7 +84,7 @@ class SceneGenerator {
 	SceneGenerator() {
 	}
 
-	public Scene createScene() {
+	public Scene createScene() throws Exception {
 		final StackPane layout = new StackPane();
 		
 
@@ -182,7 +191,12 @@ class SceneGenerator {
 			@Override
 			public void changed(ObservableValue<? extends MediaPlayer> observableValue, MediaPlayer oldPlayer,
 					MediaPlayer newPlayer) {
-				setCurrentlyPlaying(newPlayer);
+				try {
+					setCurrentlyPlaying(newPlayer);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -214,8 +228,9 @@ class SceneGenerator {
 	/**
 	 * sets the currently playing label to the label of the new media player and
 	 * updates the progress monitor.
+	 * @throws Exception 
 	 */
-	private void setCurrentlyPlaying(final MediaPlayer newPlayer) {
+	private void setCurrentlyPlaying(final MediaPlayer newPlayer) throws Exception {
 		progress.setProgress(0);
 		progressChangeListener = new ChangeListener<Duration>() {
 			@Override
@@ -232,7 +247,9 @@ class SceneGenerator {
 		source = source.substring(source.lastIndexOf("/") + 1).replaceAll("%20", " ");
 		String title;
 		String artist;
+		Database database = new Database();
 		try {
+
 			Connection con = database.getConnection();
 			PreparedStatement select = con.prepareStatement ("SELECT title, user_email FROM Music WHERE filename = '"+listOfSongs.get(location)+"';");
 			ResultSet result = select.executeQuery();
@@ -245,12 +262,10 @@ class SceneGenerator {
 			result = select.executeQuery();
 			result.next();
 			artist = result.toString();
-			
+			currentlyPlaying.setText("Artist: " + artist + "\nSong: " + title);
 		} catch (Exception error) {
 			System.out.println("Song doesn't exist");
-		}
-		
-		currentlyPlaying.setText("Artist: " + artist + "\nSong: " + title);
+		}		
 	}
 
 	public void stopMusic() {

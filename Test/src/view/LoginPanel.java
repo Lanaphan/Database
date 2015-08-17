@@ -56,13 +56,13 @@ public class LoginPanel extends JPanel {
 						if (testPassword.equals(password)) {
 							//you've signed in
 							//prompt new screen
-							System.out.println(testPassword);
 						} else {
 							JOptionPane.showMessageDialog(getParent(),
 								    "Password is wrong!");
 						}
 					} catch (Exception error) {
-						System.out.println("This username does not exist");
+						JOptionPane.showMessageDialog(getParent(),
+								"This username does not exist");
 					}
 		
 					

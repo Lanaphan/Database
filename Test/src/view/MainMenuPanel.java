@@ -23,6 +23,8 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 
 
+
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -35,8 +37,9 @@ public class MainMenuPanel extends JPanel {
 	private JButton btnSignIn;
 	private JButton btnLogOut;
 	private JPanel view;
+	private Database database;
 
-	public void setSignIn(boolean status, String email) {
+	public void setSignIn(boolean status, String email) throws Exception {
 		isSignedIn = status;
 		changeButton(email);
 	}
@@ -45,10 +48,11 @@ public class MainMenuPanel extends JPanel {
 	 * Changes the log in button to the display name of the user
 	 * and it also makes the logout button visible
 	 * Vice Versa
+	 * @throws Exception 
 	 */
-	private void changeButton(String email) {
+	private void changeButton(String email) throws Exception {
 		if (isSignedIn) {
-			
+			database = new Database();
 			Connection con = database.getConnection();
 			PreparedStatement select = con.prepareStatement ("SELECT display_name FROM User WHERE email = '"+ email  +"';");
 			ResultSet result = select.executeQuery();
