@@ -144,10 +144,19 @@ public class NewUserPanel extends JPanel {
 						String dob = txtBirthdayxxxxxxxx.getText();
 						try {
 							Connection con = database.getConnection();
-//							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
-//							insert.executeUpdate();
+							PreparedStatement insert = con.prepareStatement("INSERT INTO User VALUES ('"+email+"', '"+password+"', '"+displayName+"', '"+ dob +"');");									insert.executeUpdate();
+							insert.executeUpdate();
 							
-							Connection conPro = database.getConnection()
+							PreparedStatement insertPro = con.prepareStatement("INSERT INTO Producer VALUES ('" + email + "', '" + companyName + "', '" + contactInfo + "');");
+							insertPro.executeUpdate();
+						} catch (Exception error) {
+							System.out.println(error);
+//							JOptionPane.showMessageDialog(getParent(),
+//								    "This email address has already been registered!");
+						}
+						try {
+							Connection con = database.getConnection();
+							
 							PreparedStatement insertPro = con.prepareStatement("INSERT INTO Producer VALUES ('" + email + "', '" + companyName + "', '" + contactInfo + "');");
 							insertPro.executeUpdate();
 							// Display Finished Screen
