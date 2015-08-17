@@ -70,6 +70,13 @@ public class LoginPanel extends JPanel {
 						if (testPassword.equals(password)) {
 							//you've signed in
 							//prompt new screen
+							MainMenuPanel previous = new MainMenuPanel();
+							previous.setSignIn(true, username);
+							JFrame frame = (JFrame) getTopLevelAncestor();
+							frame.setContentPane(previous);
+							frame.repaint();
+							frame.printAll(frame.getGraphics());
+							
 						} else {
 							JOptionPane.showMessageDialog(getParent(),
 								    "Password is wrong!");
