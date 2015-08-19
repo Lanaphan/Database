@@ -17,6 +17,7 @@ public class StartingFrame extends JFrame {
 	
 	/**
 	 * Launch the application.
+	 * @author Jordan Love and Lana Phan
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

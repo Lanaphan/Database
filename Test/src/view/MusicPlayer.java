@@ -23,6 +23,7 @@ import controller.Database;
 
 /**
  * Creates a media player in gui and plays the music that is given
+ * @author Jordan Love and Lana Phan
  */
 public class MusicPlayer {
 

@@ -24,7 +24,7 @@ import controller.Database;
 
 /**
  * This creates the gui for creating a new user
- *
+ * @author Jordan Love and Lana Phan
  */
 public class NewUserPanel extends JPanel {
 	private JTextField txtEmailAddress;
