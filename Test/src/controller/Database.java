@@ -4,11 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+/*
+ * Lana Phan and Jordan Love
+ * 
+ * This class established a connection with our local database.
+ */
 public class Database {
 	public Database() throws Exception {
 		
 	}
 	
+	//returns connection from local database 
 	public Connection getConnection() throws Exception {
 		try  {
 			String driver = "com.mysql.jdbc.Driver";

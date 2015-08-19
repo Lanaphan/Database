@@ -119,7 +119,7 @@ public class MainMenuPanel extends JPanel {
 			}
 		});
 		
-		JButton btnNew = new JButton("Just Released");
+		JButton btnNew = new JButton("<html><center>Just<br> Released</html>");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String> songs =  new ArrayList<String>();
