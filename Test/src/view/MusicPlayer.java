@@ -22,14 +22,16 @@ import javax.swing.*;
 import controller.Database;
 
 /**
- * Example of playing all mp3 audio files in a given directory using a JavaFX
- * MediaView launched from Swing
+ * Creates a media player in gui and plays the music that is given
  */
 public class MusicPlayer {
 
 	private static SceneGenerator aGen;
 	private static List<String> songs;
 
+	/**
+	 * This creates and shows the jframe and jfxpanel for the media player
+	 */
 	public static void initAndShowGUI() {
 		// This method is invoked on Swing thread
 		JFrame frame = new JFrame("Music Player");
@@ -58,13 +60,21 @@ public class MusicPlayer {
 		});
 	}
 
+	/**
+	 * This allows to set the music list
+	 * @param List<String> directory of songs
+	 */
 	public void setMusic(List<String> songs) {
 		this.songs = new ArrayList<String>();
 		this.songs.addAll(songs);
 	}
 	
+	/**
+	 * Initiate the scene to play the music on a javafx thread
+	 * @param JFXPanel
+	 * @throws Exception
+	 */
 	private static void initFX(JFXPanel fxPanel) throws Exception {
-		// This method is invoked on JavaFX thread
 		aGen = new SceneGenerator();
 		aGen.listOfSongs = new ArrayList<String>();
 		aGen.listOfSongs.addAll(songs);
@@ -73,6 +83,10 @@ public class MusicPlayer {
 	}
 }
 
+/**
+ * Creates a scene with given strings
+ *
+ */
 class SceneGenerator {
 	final Label currentlyPlaying = new Label();
 	final ProgressBar progress = new ProgressBar();
@@ -82,9 +96,17 @@ class SceneGenerator {
 	private int location = 0;
 	private int size = 0;
 
+	/**
+	 * Empty constructor
+	 */
 	SceneGenerator() {
 	}
 
+	/**
+	 * Creates the gui for the music player
+	 * @return Scene
+	 * @throws Exception
+	 */
 	public Scene createScene() throws Exception {
 		final StackPane layout = new StackPane();
 		
@@ -159,13 +181,13 @@ class SceneGenerator {
 			}
 		});
 
+		// allow the user to like a track.
 		like.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				if (like.getText().equals("Liked")) {
 					// Do nothing
 				} else {
-					// TODO: Add like counter
 					like.setText("Liked");
 					Database database;
 					try {
@@ -192,10 +214,10 @@ class SceneGenerator {
 			}
 		});
 
+		// allow user to message another user
 		message.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				// TODO: Contact person by sending message to artist's database
 				SwingUtilities.invokeLater( new Runnable() 
 				{
 
@@ -230,8 +252,6 @@ class SceneGenerator {
 		mediaView.getMediaPlayer().play();
 		setCurrentlyPlaying(mediaView.getMediaPlayer());
 
-		// silly invisible button used as a template to get the actual preferred
-		// size of the Pause button.
 		Button invisiblePause = new Button("Pause");
 		invisiblePause.setVisible(false);
 		play.prefHeightProperty().bind(invisiblePause.heightProperty());

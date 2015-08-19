@@ -22,6 +22,10 @@ import javax.swing.JOptionPane;
 
 import controller.Database;
 
+/**
+ * This creates the gui for creating a new user
+ *
+ */
 public class NewUserPanel extends JPanel {
 	private JTextField txtEmailAddress;
 	private JTextField txtPassword;
@@ -29,8 +33,10 @@ public class NewUserPanel extends JPanel {
 	private JTextField txtBirthdayxxxxxxxx;
 	private JTextField txtDisplayName;
 	private Database database;
+	
 	/**
 	 * Create the panel.
+	 * Allows the panel to receive data and talk to the database
 	 * @throws Exception 
 	 */
 	public NewUserPanel() throws Exception {
@@ -227,7 +233,6 @@ public class NewUserPanel extends JPanel {
 					frame.repaint();
 					frame.printAll(frame.getGraphics());
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
