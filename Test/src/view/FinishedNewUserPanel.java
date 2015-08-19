@@ -13,6 +13,11 @@ import javax.swing.JFrame;
 
 import controller.Database;
 
+/**
+ * @author Jordan Love and Lana Phan
+ * 
+ * Confirmation Panel that a new user has successfully signed in.
+ */
 public class FinishedNewUserPanel extends JPanel {
 	
 	/**

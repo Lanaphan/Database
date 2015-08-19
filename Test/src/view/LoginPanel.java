@@ -20,6 +20,12 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import controller.Database;
 
+/**
+ * Log in panel for existing users.
+ * 
+ * @author Jordan Love and Lana Phan
+ *
+ */
 public class LoginPanel extends JPanel {
 
 	private JTextField txtUsername;

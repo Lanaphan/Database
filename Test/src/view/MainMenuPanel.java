@@ -33,6 +33,13 @@ import javax.sound.sampled.Clip;
 
 import controller.Database;
 
+/**
+ * Main Menu for our program.
+ * Will update if a User is already signed in.
+ * 
+ * @author Jordan Love and Lana Phan
+ *
+ */
 public class MainMenuPanel extends JPanel {
 
 	private boolean isSignedIn = false;
@@ -68,6 +75,13 @@ public class MainMenuPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Returns a Panel that contains the main
+	 * functionality of our projects.
+	 * Contains buttons that will play song list based on
+	 * Popular, Genre, Just Released, and Our Pick.
+	 * @return JPanel 
+	 */
 	private JPanel mainView() {
 		JPanel aView = new JPanel();
 		JButton btnPopular = new JButton("Popular");
